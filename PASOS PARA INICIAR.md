@@ -1,6 +1,6 @@
 # Poner a funcionar el Arduino con la interfaz
 
-Esta guía es para conectar el Arduino real con la aplicación LiquidFlow. Son 3 partes: subir el programa al Arduino, prender el "puente" en Python, y prender la interfaz. Los tres deben quedar corriendo **al mismo tiempo**.
+Son 3 partes: subir el programa al Arduino, prender el backend en Python, y prender la interfaz. Los tres deben quedar corriendo **al mismo tiempo**.
 
 ---
 
