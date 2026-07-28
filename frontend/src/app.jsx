@@ -9,10 +9,10 @@ import {
   FileSpreadsheet, Plus, Trash2, ChevronRight, Cpu
 } from "lucide-react";
 
-/* ---------------------------------------------------------------
+/*
    CONEXION AL BACKEND (FastAPI + WebSocket)
    Cambia estas dos URLs si el backend corre en otra maquina/puerto.
-----------------------------------------------------------------*/
+*/
 const URL_API = "http://localhost:8000";
 const URL_WS = "ws://localhost:8000/ws/liquidflow";
 
@@ -20,9 +20,6 @@ const URL_WS = "ws://localhost:8000/ws/liquidflow";
 const VOLUMEN_MINIMO_ML = 300;
 const VOLUMEN_MAXIMO_ML = 1000;
 
-/* ---------------------------------------------------------------
-   COLORES — paleta institucional ESPE (verde / rojo / blanco)
-----------------------------------------------------------------*/
 
 const FUENTE_TITULO = "'Space Grotesk', 'Segoe UI', sans-serif";
 const FUENTE_DATOS = "'JetBrains Mono', 'Roboto Mono', monospace";
@@ -97,9 +94,9 @@ const CALIBRACION_INICIAL = [
   { id: 5, lectura: 450, volumen: 1300 },
 ];
 
-/* ---------------------------------------------------------------
-   HOOK: puente en vivo con el backend (WebSocket + REST)
-----------------------------------------------------------------*/
+/*
+   HOOK: puente en vivo con el backend
+*/
 
 function usePuenteArduino() {
   const [conectado, setConectado] = useState(false);
@@ -169,9 +166,9 @@ function usePuenteArduino() {
   return { conectado, ultimaLectura, ultimoEvento, infoDispositivo, dosificar, detener };
 }
 
-/* ---------------------------------------------------------------
+/*
    PIEZAS BASE
-----------------------------------------------------------------*/
+*/
 
 function Panel({ titulo, prefijo, extra, children, estilo, estiloCuerpo }) {
   return (
@@ -254,9 +251,9 @@ function Metrica({ etiqueta, valor, unidad, color, tamano = 22 }) {
   );
 }
 
-/* ---------------------------------------------------------------
+/* 
    ELEMENTO DE FIRMA: probeta graduada con líquido en vivo
-----------------------------------------------------------------*/
+*/
 
 function MedidorCilindro({ actual, objetivo, fase }) {
   const escalaMaxima = Math.max(objetivo * 1.15, 1);
@@ -316,9 +313,9 @@ function MedidorCilindro({ actual, objetivo, fase }) {
   );
 }
 
-/* ---------------------------------------------------------------
+/*
    NUEVA DOSIFICACIÓN — conectada al backend real
-----------------------------------------------------------------*/
+*/
 
 function NuevaDosificacion({ conectado, ultimaLectura, ultimoEvento, dosificar, detener }) {
   const [fase, setFase] = useState("inactivo");
@@ -346,7 +343,7 @@ function NuevaDosificacion({ conectado, ultimaLectura, ultimoEvento, dosificar, 
       setTiempoTranscurrido(t);
       setSerie((s) => [...s, { t: Number(t.toFixed(2)), v: Number(dosificado.toFixed(2)) }]);
     }
-  }, [ultimaLectura]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [ultimaLectura]);
 
   // Reacciona a eventos puntuales: bomba detenida, resultado final, parada manual, error
   useEffect(() => {
@@ -374,7 +371,7 @@ function NuevaDosificacion({ conectado, ultimaLectura, ultimoEvento, dosificar, 
       setMensajeError(ultimoEvento.mensaje);
       setFase("error_dispositivo");
     }
-  }, [ultimoEvento]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [ultimoEvento]);
 
   async function iniciarLlenado() {
     nivelInicioRef.current = ultimaLectura ? ultimaLectura.volumen_mL : 0;
@@ -706,9 +703,9 @@ function NuevaDosificacion({ conectado, ultimaLectura, ultimoEvento, dosificar, 
   return null;
 }
 
-/* ---------------------------------------------------------------
+/* 
    DASHBOARD
-----------------------------------------------------------------*/
+*/
 
 function Dashboard({ irANueva, conectado, infoDispositivo }) {
   const ultima = HISTORIAL_INICIAL[0];
@@ -760,9 +757,9 @@ function Dashboard({ irANueva, conectado, infoDispositivo }) {
   );
 }
 
-/* ---------------------------------------------------------------
+/* 
    HISTORIAL
-----------------------------------------------------------------*/
+*/
 
 function TablaHistorial({ filas, compacto }) {
   return (
@@ -829,9 +826,9 @@ function Historial() {
   );
 }
 
-/* ---------------------------------------------------------------
+/* 
    GRÁFICAS
-----------------------------------------------------------------*/
+*/
 
 function Graficas() {
   const [seleccionado, setSeleccionado] = useState(HISTORIAL_INICIAL[0].id);
@@ -888,9 +885,9 @@ function Graficas() {
   );
 }
 
-/* ---------------------------------------------------------------
+/*
    CALIBRACIÓN
-----------------------------------------------------------------*/
+*/
 
 function Calibracion() {
   const [puntos, setPuntos] = useState(CALIBRACION_INICIAL);
@@ -970,9 +967,9 @@ function Calibracion() {
   );
 }
 
-/* ---------------------------------------------------------------
+/*
    CONFIGURACIÓN
-----------------------------------------------------------------*/
+*/
 
 function CampoConfig({ etiqueta, children }) {
   return (
@@ -1008,9 +1005,9 @@ function Configuracion({ infoDispositivo }) {
   );
 }
 
-/* ---------------------------------------------------------------
+/* 
    APLICACIÓN PRINCIPAL
-----------------------------------------------------------------*/
+*/
 
 export default function AplicacionLiquidFlow() {
   const [vista, setVista] = useState("nueva");
